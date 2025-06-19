@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+P 1000000 +K true +Q 1000000"
+      RABBITMQ_ULIMIT_NOFILES: 1024:4096
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 5s
+      timeout: 30s
+      retries: 5
+
+  node:
+    build: ./nodes
+    environment:
+      NODE_ID: ${NODE_ID}
+      TOTAL_NODES: ${TOTAL_NODES}
+      ALGORITHM: ${ALGORITHM}
+      LOSS_PROBABILITY: ${LOSS_PROBABILITY}
+      GOSSIP_K: ${GOSSIP_K}
+      BROKEN_PROBABILITY: ${BROKEN_PROBABILITY}
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    scale: 1
+
+  collector:
+    build: ./collector
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      TOTAL_NODES: ${TOTAL_NODES}
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./results:/results
