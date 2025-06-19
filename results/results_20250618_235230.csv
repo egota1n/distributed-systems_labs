@@ -1,0 +1,2 @@
+message_id,algorithm,gossip_mode,adaptive,gossip_k,loss_prob,broken_prob,initiated_at,first_received,completion_time,total_nodes,coverage_50pct,coverage_90pct,coverage_100pct,packet_loss_count,node_failures
+msg_1750367430_gossip,gossip,push-pull,False,7,0.1,0.05,2025-06-20T00:10:21.375104,2025-06-20T00:10:22.682727,9.447693639393814,100,2.053302811733575,5.4967664295479235,9.447693639393814,150,5

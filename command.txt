@@ -1,0 +1,23 @@
+# Сравнение всех алгоритмов без потерь и сбоев
+ALGORITHMS=("unicast" "multicast") \
+LOSS_PROBABILITIES=(0.0) \
+BROKEN_PROBABILITIES=(0.0) \
+bash ./run_experiments.sh
+
+# Только gossip с разными уровнями потерь
+ALGORITHMS=("gossip") \
+LOSS_PROBABILITIES=(0.0 0.01 0.05 0.1) \
+BROKEN_PROBABILITIES=(0.0) \
+bash ./run_experiments.sh
+
+# Gossip с разным процентом сбоев
+ALGORITHMS=("gossip") \
+LOSS_PROBABILITIES=(0.0) \
+BROKEN_PROBABILITIES=(0.0 0.05 0.1 0.2) \
+bash ./run_experiments.sh
+
+# Все варианты gossip
+ALGORITHMS=("gossip") \
+GOSSIP_MODES=("push" "pull" "push-pull") \
+ADAPTIVE_OPTIONS=("true" "false") \
+bash ./run_experiments.sh
